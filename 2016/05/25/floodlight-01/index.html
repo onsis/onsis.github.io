@@ -90,18 +90,16 @@
 
 
 
-<meta name="description" content="学习floodlight控制器也有一个多月的时间了，对floodlight的整体架构也有了基本了解，也能够在floodlight的架构基础上做新模块的开发，能在这么快的时间内掌握floodlight，除了要感谢国防科大老师们的指导和师兄们的热心帮助外，">
+<meta name="description" content="在介绍这篇文章之前，先自我批评一下，也希望有跟我同样坏毛病的同学一定要引以为戒。什么坏毛病呢？就是在我们学习新技术新事物的时候，一定要认真仔细的观看官方给的介绍文档，特别是英文的文档，我想有这么一大群人跟我一样，当遇到英文文档的时候，总是草草略过，结果为后续学习埋下了各种坑。就比如，floodlight的github目录就明确指出了floodlight从1.0版本开始，openflow协议就不作为">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的第一篇博客">
-<meta property="og:url" content="http://yoursite.com/2016/05/21/my-first-blog/index.html">
+<meta property="og:title" content="floodlight  openflow协议解析库打包简单介绍">
+<meta property="og:url" content="http://yoursite.com/2016/05/25/floodlight-01/index.html">
 <meta property="og:site_name" content="Just For Fun">
-<meta property="og:description" content="学习floodlight控制器也有一个多月的时间了，对floodlight的整体架构也有了基本了解，也能够在floodlight的架构基础上做新模块的开发，能在这么快的时间内掌握floodlight，除了要感谢国防科大老师们的指导和师兄们的热心帮助外，">
-<meta property="og:image" content="https://onsis.github.io/images/88.jpg">
-<meta property="og:updated_time" content="2017-05-21T09:52:38.068Z">
+<meta property="og:description" content="在介绍这篇文章之前，先自我批评一下，也希望有跟我同样坏毛病的同学一定要引以为戒。什么坏毛病呢？就是在我们学习新技术新事物的时候，一定要认真仔细的观看官方给的介绍文档，特别是英文的文档，我想有这么一大群人跟我一样，当遇到英文文档的时候，总是草草略过，结果为后续学习埋下了各种坑。就比如，floodlight的github目录就明确指出了floodlight从1.0版本开始，openflow协议就不作为">
+<meta property="og:updated_time" content="2017-05-21T09:49:28.868Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的第一篇博客">
-<meta name="twitter:description" content="学习floodlight控制器也有一个多月的时间了，对floodlight的整体架构也有了基本了解，也能够在floodlight的架构基础上做新模块的开发，能在这么快的时间内掌握floodlight，除了要感谢国防科大老师们的指导和师兄们的热心帮助外，">
-<meta name="twitter:image" content="https://onsis.github.io/images/88.jpg">
+<meta name="twitter:title" content="floodlight  openflow协议解析库打包简单介绍">
+<meta name="twitter:description" content="在介绍这篇文章之前，先自我批评一下，也希望有跟我同样坏毛病的同学一定要引以为戒。什么坏毛病呢？就是在我们学习新技术新事物的时候，一定要认真仔细的观看官方给的介绍文档，特别是英文的文档，我想有这么一大群人跟我一样，当遇到英文文档的时候，总是草草略过，结果为后续学习埋下了各种坑。就比如，floodlight的github目录就明确指出了floodlight从1.0版本开始，openflow协议就不作为">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/05/21/my-first-blog/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/05/25/floodlight-01/"/>
 
 
 
 
 
-  <title>我的第一篇博客 | Just For Fun</title>
+  <title>floodlight  openflow协议解析库打包简单介绍 | Just For Fun</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -275,7 +273,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/21/my-first-blog/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/25/floodlight-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="孙小添">
@@ -292,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">我的第一篇博客</h1>
+          <h1 class="post-title" itemprop="name headline">floodlight  openflow协议解析库打包简单介绍</h1>
         
 
         <div class="post-meta">
@@ -304,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T17:30:18+08:00">
-                2016-05-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T19:45:05+08:00">
+                2016-05-25
               </time>
             
 
@@ -339,7 +337,10 @@
       
 
       
-        <p>学习floodlight控制器也有一个多月的时间了，对floodlight的整体架构也有了基本了解，也能够在floodlight的架构基础上做新模块的开发，能在这么快的时间内掌握floodlight，除了要感谢国防科大老师们的指导和师兄们的热心帮助外，<a id="more"></a>还要感谢sdnlab上乐于奉献的老师、同学以及已在工作岗位上的朋友们，没有你们在前面的学习经验和代码分析，我想我恐怕就是给我三个月我也弄不懂floodlight，更别说在上面添加新模块了。<br><img src="https://onsis.github.io/images/88.jpg" alt=""><br>想起一开始学习floodlight的时候，老师就跟我说，在学习的过程中，要把学到的东西记录下来，写笔记不仅仅是记录我们学习的路程，更重要的是能够加深我们对所学对象的理解。当时我还夸口说，我要把floodlight完全理解，并把每个模块的分析做成报告，分享到网络上。既然大话已经说出去了，我也就不能够退宿。以前从来没有写过博客，正好借这么一次机会，开启了我的人生第一次博客生涯。</p>
+        <p>在介绍这篇文章之前，先自我批评一下，也希望有跟我同样坏毛病的同学一定要引以为戒。什么坏毛病呢？就是在我们学习新技术新事物的时候，一定要认真仔细的观看官方给的介绍文档，特别是英文的文档，我想有这么一大群人跟我一样，当遇到英文文档的时候，总是草草略过，结果为后续学习埋下了各种坑。就比如，floodlight的github目录就明确指出了floodlight从1.0版本开始，openflow协议就不作为floodlight的源码进行一起编译了，而是专门的团队统一维护openflow协议并生成jar包，供floodlight调用，而且下面有专门介绍如何编译openflow协议生成jar包的方法，以及工具（loxigen）。<a id="more"></a>我当时在这个github目录中就是下载一个floodlight最新版本就完了，只是简单看了每个版本支持什么协议而已，就没认真继续往下面看loxigen的介绍。结果呢巨坑啊，在分析floodlight源码的时候，想要看openflow协议部分，可是openflow协议在floodlight源码包中就是一个jar包，看不了，怎么办网上各种搜，好不容易搜到了斯坦福大学一个团队维护的openflowJ的源码包，可是只维护到2013年，编译放到floodlight工程中，提示错误。怎么办，问科大师兄，可是师兄们floodlight比较熟悉的都是1.0以下的版本，也一时半会找不到好的解决方案，国内各种百度，陆陆续续都三天时间了，也找不到，就差翻墙了。不过呢，前不久去北邮出差，认识了几个哪里的研究生，果断微信景元兄，说明疑惑，景元兄也挺热心的，立马给我发了一个连接，我打开一看，这不就是floodlight的github目录吗，我早看了，赶紧@景元兄，景元兄说叫我看一下loxigen的readme文件，我一看，才了解到loxigen 是一个把openflow协议栈打包编译成不同语言库（c,python,java）的工具，对景元兄万分感谢后，果断fork了loxigen，编译出了符合floodlight 1.2版本的openflowJ的jar包（当然编译过程中少不了我们662室带我的徐大神帮助，在这也是万分感谢）。下面是编译过程，写的不好的地方多多原谅。<br>loxigen 下载地址：<br><a href="https://github.com/floodlight/loxigen/wiki/OpenFlowJ-Loxi" target="_blank" rel="external">https://github.com/floodlight/loxigen/wiki/OpenFlowJ-Loxi</a><br>打包步骤：<br>(1):执行如下命令<br>git clone git@github.com:floodlight/loxigen.git<br>cd  loxigen<br>make    //可以通过看Makefile文件，来了解它打包的步骤，<br>/<strong><br><em>注意：当我执行make命令后提示如下错误：
+</em>error:  ./loxigen.py  –install-dir=${LOXI_OUTPUT_DIR} –lang=c  没有这个文件或目录<br><em>我的解决方法是，修改Makefile文件，把makefile文件中所有的 ./loxigen.py  替换为 python  loxigen.py
+</em>/<br>直接执行make后，会在当前目录下生成loxi_output目录，进入loxi_output目录，我们可以看到生成了openflowj,pyloxi,wireshark等目录，<br>floodlight需要的是openflowj，所以我们进入到openflowj目录，接着执行（2）<br>(2):执行如下命令<br>cd  loxi_output/openflowj<br>mvn  clean   package  //这个命令的作用是把源码编译打包成jar<br>/</strong><br><em>注意：当我执行上面的命令时，它提示有2个test  failure 的错误  ：[INFO] BUILD  FAILURE
+</em>我的解决方法是，由于执行mvn clean  package 进行编译打包过程中需要进行单元测试，只有单元测试通过了，最终才能打包成功，上面提示是单元测试失败，所以可以在命令后面添加-Dmaven.test.skip=true参数来跳过单元测试<br>*/<br>如下：<br>mvn  clean  package  -Dmaven.test.skip=true<br>执行完命令后提示：[INFO] BUILD  SUCCSSFUL ，则说明打包成功，接着执行命令<br>mvn  javadoc:jar<br>执行完命令后提示：[INFO] BUILD  SUCCSSFUL ，则说明javadoc文档生成成功<br>此时，我们进入target目录，我们可以看到我们需要的jar包，如：<br>openflowj-2.1.0-SNAPSHOT.jar  openflowj-2.1.0-SNAPSHOT-sources.jar  openflowj-2.1.0-SNAPSHOT-javadoc.jar<br>(3):<br>把上面三个文件拷贝的floodlight的源码包的lib目录中，替换原来的这三个文件，接着修改build.xml文件里对应的文件名称。最后执行ant 命令，生成floodlight.jar 包成jar</p>
 
       
     </div>
@@ -376,14 +377,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/05/21/my-first-blog/" rel="next" title="我的第一篇博客">
+                <i class="fa fa-chevron-left"></i> 我的第一篇博客
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/25/floodlight-01/" rel="prev" title="floodlight  openflow协议解析库打包简单介绍">
-                floodlight  openflow协议解析库打包简单介绍 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/06/01/floodlight-02/" rel="prev" title="floodlight-02">
+                floodlight-02 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

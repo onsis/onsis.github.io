@@ -1,0 +1,733 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1 实验目的本次测试的目的是： （1）验证使用NetMagic08+XTR控制器搭建适合实验的小型SDN网络实验环境的可行性； （2）利用该环境验证基于端口转发和隧道封装提高数据中心网络负载均衡能力的效果 2 实验原理本次实验理论基础是国防科大基于增强的高性能虚拟网络VegaNet,再利用隧道技术在CNGI/CERNET2主干网之上构成覆盖网络的层叠网验证方案。基于这个方案开发的设备主要是基于Ne">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境">
+<meta property="og:url" content="http://yoursite.com/2016/06/21/floodlight-03/index.html">
+<meta property="og:site_name" content="Just For Fun">
+<meta property="og:description" content="1 实验目的本次测试的目的是： （1）验证使用NetMagic08+XTR控制器搭建适合实验的小型SDN网络实验环境的可行性； （2）利用该环境验证基于端口转发和隧道封装提高数据中心网络负载均衡能力的效果 2 实验原理本次实验理论基础是国防科大基于增强的高性能虚拟网络VegaNet,再利用隧道技术在CNGI/CERNET2主干网之上构成覆盖网络的层叠网验证方案。基于这个方案开发的设备主要是基于Ne">
+<meta property="og:image" content="http://nsislog.com/images/floodlight/topo.jpg">
+<meta property="og:image" content="http://nsislog.com/images/floodlight/topo-solid.jpg">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/floodlight.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/compile1.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/compile2.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/761.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/762.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/763.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/flowmod.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/1-3.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/2-3.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/3-2.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/3-1/bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc1.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc2.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc3.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc4.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc5.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc6.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc7.bmp">
+<meta property="og:image" content="https://onsis.github.io/images/floodlight/vlc8.bmp">
+<meta property="og:updated_time" content="2017-05-21T09:58:09.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境">
+<meta name="twitter:description" content="1 实验目的本次测试的目的是： （1）验证使用NetMagic08+XTR控制器搭建适合实验的小型SDN网络实验环境的可行性； （2）利用该环境验证基于端口转发和隧道封装提高数据中心网络负载均衡能力的效果 2 实验原理本次实验理论基础是国防科大基于增强的高性能虚拟网络VegaNet,再利用隧道技术在CNGI/CERNET2主干网之上构成覆盖网络的层叠网验证方案。基于这个方案开发的设备主要是基于Ne">
+<meta name="twitter:image" content="http://nsislog.com/images/floodlight/topo.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/21/floodlight-03/"/>
+
+
+
+
+
+  <title>使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境 | Just For Fun</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just For Fun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/21/floodlight-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孙小添">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just For Fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-21T17:54:28+08:00">
+                2016-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-实验目的"><a href="#1-实验目的" class="headerlink" title="1 实验目的"></a>1 实验目的</h2><p>本次测试的目的是：</p>
+<p>（1）验证使用NetMagic08+XTR控制器搭建适合实验的小型SDN网络实验环境的可行性；</p>
+<p>（2）利用该环境验证基于端口转发和隧道封装提高数据中心网络负载均衡能力的效果</p>
+<h2 id="2-实验原理"><a href="#2-实验原理" class="headerlink" title="2 实验原理"></a>2 实验原理</h2><p>本次实验理论基础是国防科大基于增强的高性能虚拟网络VegaNet,再利用隧道技术在CNGI/CERNET2主干网之上构成覆盖网络的层叠网验证方案。基于这个方案开发的设备主要是基于NetMagic系列的设备实现VegaNet的封装和解封装，实现VegaNet网络透穿，支持高带宽的实验流量，同时改进链路状态管理协议，提高网络控制的灵活性。<a id="more"></a></p>
+<h2 id="3-实验拓扑"><a href="#3-实验拓扑" class="headerlink" title="3 实验拓扑"></a>3 实验拓扑</h2><p><img src="http://nsislog.com/images/floodlight/topo.jpg" alt=""></p>
+<h2 id="4-实验步骤"><a href="#4-实验步骤" class="headerlink" title="4 实验步骤"></a>4 实验步骤</h2><h3 id="4-1-搭建测试环境"><a href="#4-1-搭建测试环境" class="headerlink" title="4.1 搭建测试环境"></a>4.1 搭建测试环境</h3><p>按照拓扑搭建真实环境，如图3-1所示：<br><img src="http://nsislog.com/images/floodlight/topo-solid.jpg" alt=""></p>
+<p>具体连接方式：</p>
+<p>（1）3台NetMagic08设备的0号端口分别连接到交换机设备上；</p>
+<p>（2）1号NetMagic08设备的1号端口连接主机A2（作为视频接收端）；</p>
+<p>（3）2号NetMagic08设备的1号端口连接主机B2（作为视频接收端）；</p>
+<p>（4）3号NetMagic08设备的1号端口连接主机A1（作为视频接发送端）；</p>
+<p>（5）3号NetMagic08设备的2号端口连接主机B1（作为视频接发送端）；</p>
+<p>（6）floodlight控制器+3台NetMagic08设备软件适配代码都放到一台主机上（Ubuntu 14.04），并通过一根网线连接到交换机上。（这里特殊声明一下，由于主机不够，我们把控制器和软件适配代码都放到了一起）</p>
+<h3 id="4-2-启动floodlight控制器"><a href="#4-2-启动floodlight控制器" class="headerlink" title="4.2 启动floodlight控制器"></a>4.2 启动floodlight控制器</h3><p>启动过程如下：<br><img src="https://onsis.github.io/images/floodlight/floodlight.bmp" alt=""></p>
+<h3 id="4-3-启动NetMagic08设备"><a href="#4-3-启动NetMagic08设备" class="headerlink" title="4.3 启动NetMagic08设备"></a>4.3 启动NetMagic08设备</h3><p>（1）NetMagic08硬件设备启动</p>
+<p>设备只需接上电源，打开设备背面开关即可；</p>
+<p>（2）NetMagic08软件适配软件启动</p>
+<p>编译软件：（以1号NetMagic08软件适配代码为例）</p>
+<p>输入命令：make clean<br><img src="https://onsis.github.io/images/floodlight/compile1.bmp" alt=""></p>
+<p>输入命令：make<br><img src="https://onsis.github.io/images/floodlight/compile2.bmp" alt=""></p>
+<p>启动过程依次如下：</p>
+<p>1号NetMagic08<br><img src="https://onsis.github.io/images/floodlight/761.bmp" alt=""></p>
+<p>2号NetMagic08<br><img src="https://onsis.github.io/images/floodlight/762.bmp" alt=""></p>
+<p>3号NetMagic08<br><img src="https://onsis.github.io/images/floodlight/763.bmp" alt=""></p>
+<h3 id="4-4-上层app下发规则"><a href="#4-4-上层app下发规则" class="headerlink" title="4.4 上层app下发规则"></a>4.4 上层app下发规则</h3><p>通过flowmod.py脚本下发PORT—RLOC规则（<a href="https://github.com/onsis/NetMagic.git" target="_blank" rel="external">源码</a>）<br><img src="https://onsis.github.io/images/floodlight/flowmod.bmp" alt=""></p>
+<h3 id="4-5-BV算法下发规则"><a href="#4-5-BV算法下发规则" class="headerlink" title="4.5 BV算法下发规则"></a>4.5 BV算法下发规则</h3><p>BV算法是NetMagic08软件适配代码的一部分，它主要负责把floodlight控制器下发的规则通过NMAC协议，下发到硬件中。下面是NetMagic08软件适配代码给硬件下发规则时的打印信息截图：</p>
+<p>1号NetMagic08软件适配代码：<br><img src="https://onsis.github.io/images/floodlight/1-3.bmp" alt=""></p>
+<p>2号NetMagic08软件适配代码：<br><img src="https://onsis.github.io/images/floodlight/2-3.bmp" alt=""></p>
+<p>3号NetMagic08软件适配代码：<br><img src="https://onsis.github.io/images/floodlight/3-2.bmp" alt=""></p>
+<p><img src="https://onsis.github.io/images/floodlight/3-1/bmp" alt=""></p>
+<h3 id="4-6-测试硬件规则是否下发成功"><a href="#4-6-测试硬件规则是否下发成功" class="headerlink" title="4.6 测试硬件规则是否下发成功"></a>4.6 测试硬件规则是否下发成功</h3><p>测试规则是否正确下发到硬件，我们可以通过ping方式来验证。<br>这里我采用拓扑中的业务A进行测试，让A1 ping A2，如果能ping通，则证明上层规则已经正确下发到硬件中，接下来我们就可以进行视频流化操作</p>
+<h3 id="4-7-流化视频"><a href="#4-7-流化视频" class="headerlink" title="4.7 流化视频"></a>4.7 流化视频</h3><p>本次视频流化测试采用拓扑中的业务A，视频发送端A1为流化服务端，视频接收端A2为视频播放客户端，步骤：</p>
+<p>（1）打开VLC media  player,选择【媒体】，接着选择【流(s)…】,打开如图所示：<br><img src="https://onsis.github.io/images/floodlight/vlc1.bmp" alt=""></p>
+<p>（2）接着点击【添加】，选择视频文件，选择好视频文件后，点击【串流】，结果如图所示：<br><img src="https://onsis.github.io/images/floodlight/vlc2.bmp" alt=""><br>（3）点击【下一个】，在进入的界面中勾选【在本地显示】，选择UDP方式，如图所示：<br><img src="https://onsis.github.io/images/floodlight/vlc3.bmp" alt=""><br>（4)接着点击（3）图中的【添加】选项，进入如下界面，在地址栏填写目标机的IP地址（在这里为视频接收端A2的地址），注意因为流的是ipv6地址，所以要加[]括号；端口默认1234，用户可随意更改。接着点击下一步<br><img src="https://onsis.github.io/images/floodlight/vlc4.bmp" alt=""><br>（5）默认选择，接着点击下一步<br><img src="https://onsis.github.io/images/floodlight/vlc5.bmp" alt=""><br>（6）默认选择，点击【流】，即可完成流化<br><img src="https://onsis.github.io/images/floodlight/vlc6.bmp" alt=""><br>（7）在视频接收端A2机器中，打开VLC media player,选择【媒体】，接着选择【打开网络串流】，进入如图界面，在URL地址栏输入udp://@:1234,然后点击播放<br><img src="https://onsis.github.io/images/floodlight/vlc7.bmp" alt=""><br>（8）A2主机接收到视频效果图<br><img src="https://onsis.github.io/images/floodlight/vlc8.bmp" alt=""></p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>经过本次实验，我们验证了基于我们国防科大研制的NetMagic08设备能够与目前主流SDN开源控制器，在经过简单的适配后，能够快速、简洁的搭建小型SDN环境，并完成一些用户自定义的小实验。其次最主要的是，我们搭建这么一个平台初步验证了层叠网实验方案的可行性。当然，在本次实验中，我们也有很多不足的地方，我们开发的NetMagic08硬件代码和软件适配代码还不够完善，不能支持完整的openflow1.3协议，NetMagic08支持的流表数有限，也导致控制器无法实现完美的拓扑展示。不过我们正在开发完善中，望后面的版本能够完善这个缺陷。最后，说明一下，本次实验其实是算我们的小团队在进行各自负责代码调试过程的一些记录而已，写的不好还望多多包涵。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/floodlight-02/" rel="next" title="floodlight-02">
+                <i class="fa fa-chevron-left"></i> floodlight-02
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="孙小添" />
+          <p class="site-author-name" itemprop="name">孙小添</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-实验目的"><span class="nav-number">1.</span> <span class="nav-text">1 实验目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实验原理"><span class="nav-number">2.</span> <span class="nav-text">2 实验原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-实验拓扑"><span class="nav-number">3.</span> <span class="nav-text">3 实验拓扑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-实验步骤"><span class="nav-number">4.</span> <span class="nav-text">4 实验步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-搭建测试环境"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 搭建测试环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-启动floodlight控制器"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 启动floodlight控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-启动NetMagic08设备"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 启动NetMagic08设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-上层app下发规则"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 上层app下发规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-BV算法下发规则"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 BV算法下发规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-测试硬件规则是否下发成功"><span class="nav-number">4.6.</span> <span class="nav-text">4.6 测试硬件规则是否下发成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-流化视频"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 流化视频</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-总结"><span class="nav-number">5.</span> <span class="nav-text">5 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">孙小添</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

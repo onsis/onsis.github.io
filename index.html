@@ -271,6 +271,357 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/21/floodlight-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孙小添">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just For Fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/21/floodlight-03/" itemprop="url">使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-21T17:54:28+08:00">
+                2016-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="1-实验目的"><a href="#1-实验目的" class="headerlink" title="1 实验目的"></a>1 实验目的</h2><p>本次测试的目的是：</p>
+<p>（1）验证使用NetMagic08+XTR控制器搭建适合实验的小型SDN网络实验环境的可行性；</p>
+<p>（2）利用该环境验证基于端口转发和隧道封装提高数据中心网络负载均衡能力的效果</p>
+<h2 id="2-实验原理"><a href="#2-实验原理" class="headerlink" title="2 实验原理"></a>2 实验原理</h2><p>本次实验理论基础是国防科大基于增强的高性能虚拟网络VegaNet,再利用隧道技术在CNGI/CERNET2主干网之上构成覆盖网络的层叠网验证方案。基于这个方案开发的设备主要是基于NetMagic系列的设备实现VegaNet的封装和解封装，实现VegaNet网络透穿，支持高带宽的实验流量，同时改进链路状态管理协议，提高网络控制的灵活性。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/06/21/floodlight-03/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/01/floodlight-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孙小添">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just For Fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/01/floodlight-02/" itemprop="url">floodlight-02</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-01T20:50:36+08:00">
+                2016-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在分析floodlight源码包之前，先惯例性来个简单介绍，floodlight是一款基于Java语言的开源SDN控制器，遵循Apache2.0软件许可，支持openflow协议。Floodlight与NOX、POX等其他控制器类似，也使用了“层次化”架构来实现控制器的功能，同时提供了丰富的应用，可以直接在网络中部署数据转发、拓扑发现等基本功能。也正是因为floodlight这种模块化的实现方式，让我们分析floodlight源码大大减轻了难度。    ·<br>在接下来的分析里，我只是重点介绍一下floodlight新版本源码改变的地方。相信有那么一部分初学者floodlight的入门是看北邮老师写的这本书《软件定义网络核心原理与应用实践》，我开始学习floodlight的时候，直接选择了floodlight1.2版本，去看源码的时候，跟这本书上介绍的有点出入，要不是后续floodlight接触多了，还真无从下手，就比如书中介绍源码树下的org.openflow目录就没有，floodlight1.2版本中是调用了openflowJ库，在lib目录下有。以及代码中封装flowmod消息中构造match域的方式，channel接收消息的方式都有一些改变，当然这些改变是针对目前网上已有的floodlight分析文章中的内容。对floodlight整个源码大体分析网上已经有很多文章了，包括具体模块的分析，也有很多文章，但是这些文章都是基于老版本的floodlight，目前新版本都或多或少有改变，所以这篇文章侧重点是分析floodlight1.2版本我接触到的模块与网上分析的模块的不同之处。<br>获取源码方式：
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/06/01/floodlight-02/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/25/floodlight-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孙小添">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just For Fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/25/floodlight-01/" itemprop="url">floodlight  openflow协议解析库打包简单介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T19:45:05+08:00">
+                2016-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在介绍这篇文章之前，先自我批评一下，也希望有跟我同样坏毛病的同学一定要引以为戒。什么坏毛病呢？就是在我们学习新技术新事物的时候，一定要认真仔细的观看官方给的介绍文档，特别是英文的文档，我想有这么一大群人跟我一样，当遇到英文文档的时候，总是草草略过，结果为后续学习埋下了各种坑。就比如，floodlight的github目录就明确指出了floodlight从1.0版本开始，openflow协议就不作为floodlight的源码进行一起编译了，而是专门的团队统一维护openflow协议并生成jar包，供floodlight调用，而且下面有专门介绍如何编译openflow协议生成jar包的方法，以及工具（loxigen）。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/05/25/floodlight-01/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/21/my-first-blog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -423,7 +774,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

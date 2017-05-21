@@ -1,0 +1,693 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在分析floodlight源码包之前，先惯例性来个简单介绍，floodlight是一款基于Java语言的开源SDN控制器，遵循Apache2.0软件许可，支持openflow协议。Floodlight与NOX、POX等其他控制器类似，也使用了“层次化”架构来实现控制器的功能，同时提供了丰富的应用，可以直接在网络中部署数据转发、拓扑发现等基本功能。也正是因为floodlight这种模块化的实现方式，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="floodlight-02">
+<meta property="og:url" content="http://yoursite.com/2016/06/01/floodlight-02/index.html">
+<meta property="og:site_name" content="Just For Fun">
+<meta property="og:description" content="在分析floodlight源码包之前，先惯例性来个简单介绍，floodlight是一款基于Java语言的开源SDN控制器，遵循Apache2.0软件许可，支持openflow协议。Floodlight与NOX、POX等其他控制器类似，也使用了“层次化”架构来实现控制器的功能，同时提供了丰富的应用，可以直接在网络中部署数据转发、拓扑发现等基本功能。也正是因为floodlight这种模块化的实现方式，">
+<meta property="og:updated_time" content="2017-05-21T09:51:53.753Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="floodlight-02">
+<meta name="twitter:description" content="在分析floodlight源码包之前，先惯例性来个简单介绍，floodlight是一款基于Java语言的开源SDN控制器，遵循Apache2.0软件许可，支持openflow协议。Floodlight与NOX、POX等其他控制器类似，也使用了“层次化”架构来实现控制器的功能，同时提供了丰富的应用，可以直接在网络中部署数据转发、拓扑发现等基本功能。也正是因为floodlight这种模块化的实现方式，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/01/floodlight-02/"/>
+
+
+
+
+
+  <title>floodlight-02 | Just For Fun</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just For Fun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/01/floodlight-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孙小添">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just For Fun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">floodlight-02</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-01T20:50:36+08:00">
+                2016-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在分析floodlight源码包之前，先惯例性来个简单介绍，floodlight是一款基于Java语言的开源SDN控制器，遵循Apache2.0软件许可，支持openflow协议。Floodlight与NOX、POX等其他控制器类似，也使用了“层次化”架构来实现控制器的功能，同时提供了丰富的应用，可以直接在网络中部署数据转发、拓扑发现等基本功能。也正是因为floodlight这种模块化的实现方式，让我们分析floodlight源码大大减轻了难度。    ·<br>在接下来的分析里，我只是重点介绍一下floodlight新版本源码改变的地方。相信有那么一部分初学者floodlight的入门是看北邮老师写的这本书《软件定义网络核心原理与应用实践》，我开始学习floodlight的时候，直接选择了floodlight1.2版本，去看源码的时候，跟这本书上介绍的有点出入，要不是后续floodlight接触多了，还真无从下手，就比如书中介绍源码树下的org.openflow目录就没有，floodlight1.2版本中是调用了openflowJ库，在lib目录下有。以及代码中封装flowmod消息中构造match域的方式，channel接收消息的方式都有一些改变，当然这些改变是针对目前网上已有的floodlight分析文章中的内容。对floodlight整个源码大体分析网上已经有很多文章了，包括具体模块的分析，也有很多文章，但是这些文章都是基于老版本的floodlight，目前新版本都或多或少有改变，所以这篇文章侧重点是分析floodlight1.2版本我接触到的模块与网上分析的模块的不同之处。<br>获取源码方式：<a id="more"></a><br>我们在分析floodlight源码的时候，可以参照floodlight官方网站上提供的架构图来最为切入点。架构图上的各个模块在源码目录下都会有一个以这个模块名为名称的文件夹，在这个文件夹中的Java代码即为这个模块功能的实现代码，所以我们只是分析某个模块功能的时候，只需要找到对应的文件夹，分析里面的Java文件就行了。当然在源码树目录中（src\main\java\net\floodlightcontroller这个目录下）的文件夹名也不是完全对应着架构图上的各个模块名字，比如模块管理模块，就没有与之对应的文件夹，但是有个名字叫core的文件夹，经过我分析里面的Java代码，模块管理模块的具体实现代码就在core文件夹中，其余模块都会有一个与模块名一一对应的文件夹。<br>另外除了以架构图为切入点外，在分析floodlight的时候，需要提前了解一下Java编程中的一些特性，在这里我只是列出需要注意的点，具体内容可以参考《think in java》或者《疯狂Java讲义》。Java大牛直接跳过，像我这种第一次接触Java语言的菜鸟来说，还是乖乖的先了解一下下面我提到的Java知识，这样可以避免很多坑。<br>（1）    理解Java语言中的接口和类的概念，以及它们之间的区别；<br>（2）    理解Java中集合编程知识，重点是list,map；<br>（3）    理解Java泛型编程知识；<br>（4）    理解Netty通信框架原理。<br>有了对上面知识的了解后，在分析代码的过程中，就会轻松很多，在这里我就把我对core文件夹中的代码的一些认识整理出来，当然其中一些分析是参考了网上已有的资料，不过更多的是我经过多次实验，跑报文抓包分析的结果。对core文件夹里代码的分析，我们需要大体知道这个文件夹里的代码主要实现的功能是负责与交换机建立连接，负责管理加载floodlight的各个模块，以及完成报文的接收、发送、分派和整个系统启动。<br>1、    Main.java文件<br>Main是floodlight工程的入口方法，它主要完成的任务是：首先导入floodlight的默认配置文件“src/main/resources/floodlightdefault.properties”，接着根据配置文件加载并启动各个模块，具体代码实现如下：<br>try {<br>            // Setup logger<br>            System.setProperty(“org.restlet.engine.loggerFacadeClass”,<br>                    “org.restlet.ext.slf4j.Slf4jLoggerFacade”);</p>
+<pre><code>        CmdLineSettings settings = new CmdLineSettings();
+        CmdLineParser parser = new CmdLineParser(settings);
+        try {
+            parser.parseArgument(args);
+        } catch (CmdLineException e) {
+            parser.printUsage(System.out);
+            System.exit(1);
+        }
+
+        // Load modules
+        FloodlightModuleLoader fml = new FloodlightModuleLoader();
+        try {
+            IFloodlightModuleContext moduleContext = fml.loadModulesFromConfig(settings.getModuleFile());
+            IRestApiService restApi = moduleContext.getServiceImpl(IRestApiService.class);
+            restApi.run(); 
+        } catch (FloodlightModuleConfigFileNotFoundException e) {
+            // we really want to log the message, not the stack trace
+            logger.error(&quot;Could not read config file: {}&quot;, e.getMessage());
+            System.exit(1);
+        }
+        try {
+            fml.runModules(); // run the controller module and all modules
+        } catch (FloodlightModuleException e) {
+            logger.error(&quot;Failed to run controller modules&quot;, e);
+            System.exit(1);
+        }
+    } catch (Exception e) {
+        logger.error(&quot;Exception in main&quot;, e);
+        System.exit(1);
+    }
+}
+</code></pre><p>2、    FloodlightModuleLoadler.java<br>FloodlightModuleLoader这个类主要是模块导入、模块加载、模块初始化和启动的具体功能代码实现。<br>loadModulesFromConfig（string  fName）方法:这个方法的功能是从指定的配置文件中导入模块。方法参数是配置文件的文件路径，方法返回值是一个模块上下文集合。<br>addModule()方法：这个方法的作用是把把模块对象放入名叫moduleList的集合中，具体代码实现如下：<br>protected void addModule(Map<class<? extends="" ifloodlightservice="">,<br>                                           IFloodlightModule&gt; moduleMap,<br>                            Collection<ifloodlightmodule> moduleList,<br>                            IFloodlightModule module) {<br>        Collection<class<? extends="" ifloodlightservice="">&gt; servs =<br>                moduleServiceMap.get(module);<br>        if (servs != null) {<br>            for (Class&lt;? extends IFloodlightService&gt; c : servs)<br>                moduleMap.put(c, module);<br>        }<br>        moduleList.add(module);<br>}<br>initModules()方法：这个方法的作用是遍历moduleSet集合，接着执行遍历得到的模块中的init方法，完成此模块的初始化任务。代码如下<br>for (IFloodlightModule module : moduleSet) {<br>            // init the module<br>            if (logger.isDebugEnabled()) {<br>                logger.debug(“Initializing “ +<br>                             module.getClass().getCanonicalName());<br>            }<br>            module.init(floodlightModuleContext);<br>        }<br>startupModules()方法：这个方法的作用是遍历moduleSet集合，接着执行遍历得到的模块中的startUp方法，startUp方法根据具体模块的需求添加相应功能，比如这个模块需要监听packet_in消息，则需调用addOFMessageListener(OFType type,IOFMessageLIstener  listener)方法向floodlightProvider注册此模块监听packet_in消息；另外如果此模块需要提供REST API接口供上层app调用的话，还需要通过addRestletRoutable()向restAPI注册REST 接口。代码实现如下。<br>protected void startupModules(Collection<ifloodlightmodule> moduleSet)<br>            throws FloodlightModuleException {<br>        for (IFloodlightModule m : moduleSet) {<br>            if (logger.isDebugEnabled()) {<br>                logger.debug(“Starting “ + m.getClass().getCanonicalName());<br>            }<br>            m.startUp(floodlightModuleContext);<br>        }<br>}<br>3、    Controller.java<br>在这里我主要分析Controller类对于消息的派发过程。关键方法为handleMessage()。<br>当OFSwitchHandshakeHandler类收到来自OFChannelHandler类传递过来的消息时，就会触发处理方法handleMessage()，而handleMessage()的具体实现即在controller类中实现。<br>核心内容就是遍历listenners集合，把消息传递给listener对象的回调函数receive。（这些listener，即通过方法addMessageListener()注册监听的各个模块对象）。关键部分代码如下。<br>for (IOFMessageListener listener : listeners) {<br>                        pktinProcTimeService.recordStartTimeComp(listener);<br>                        cmd = listener.receive(sw, m, bc);<br>                        pktinProcTimeService.recordEndTimeComp(listener);</ifloodlightmodule></class<?></ifloodlightmodule></class<?></p>
+<pre><code>    if (Command.STOP.equals(cmd)) {
+        break;
+    }
+}
+</code></pre><p>4、    OFChannelHandler.java<br>OFChannelHandler类实现的功能是处理交换机的连接过程以及完成最下层的消息接收、发送，以及实现把收到的消息分派给更上层的控制器模块。Nettty通信建立完成后，通过channel通道， floodlight控制器收到openflow交换发给控制器的二进制消息buffer，接着控制器会调用OFMessageDecoder类进行解码，把二进制消息解析成openflow消息格式，并存放到消息集合msgList中。此时方法channelRead0()会循环遍历这个msgList集合，把消息对象送给state.processOFMessage()方法进行处理。具体实现代码如下：<br>public void channelRead0(ChannelHandlerContext ctx, Iterable<ofmessage> msgList) throws Exception {<br>        for (OFMessage ofm : msgList) {<br>            try {<br>                // Do the actual packet processing<br>                state.processOFMessage(ofm);<br>            }<br>            catch (Exception ex) {<br>                // We are the last handler in the stream, so run the<br>                // exception through the channel again by passing in<br>                // ctx.getChannel().<br>                ctx.fireExceptionCaught(ex);<br>            }<br>        }<br>    }<br>同样floodlight发送给openflow交换机的消息最终会调用channel.wirteAndFlush()方法写入channel通道，通过socket发送给openflow交换机。代码调用如下<br>private void write(OFMessage m) {<br>        channel.writeAndFlush(Collections.singletonList(m));<br>    }</ofmessage></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/25/floodlight-01/" rel="next" title="floodlight  openflow协议解析库打包简单介绍">
+                <i class="fa fa-chevron-left"></i> floodlight  openflow协议解析库打包简单介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/21/floodlight-03/" rel="prev" title="使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境">
+                使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="孙小添" />
+          <p class="site-author-name" itemprop="name">孙小添</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">孙小添</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
