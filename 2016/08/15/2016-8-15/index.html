@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/08/15/2016-8-15/index.html">
 <meta property="og:site_name" content="Just For Fun">
 <meta property="og:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
-<meta property="og:updated_time" content="2017-05-25T14:13:11.302Z">
+<meta property="og:updated_time" content="2017-05-25T14:36:34.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何构建一个网络空间搜索引擎">
 <meta name="twitter:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
@@ -338,8 +338,12 @@
       
 
       
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了一个网络空间搜索引擎的大体架构，并为实现自己的个性化网络空间搜索引擎做了一个简单方案。</p>
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了一个网络空间搜索引擎的大体架构，并为实现自己的个性化网络空间搜索引擎做了一个简单方案。<a id="more"></a></p>
 <h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>网络空间搜索引擎的整体架构主要分为调度框架、扫描器、存储分类、攻击框架和UI呈现等。</p>
+<ul>
+<li>调度框架：负责从队列中获取扫描任务分发给扫描节点，然后处理节点完成扫描任务后返回结果。开源的调度框架很多，比如使用Python开发的Celery、RQ、APScheduler等等。</li>
+<li>扫描器：从开源的这些项目中可以看到，它们的扫描器都是使用开源的比如nmap、zmap、bro、pof等，可能商用的网络空间搜索引擎它们不仅仅使用这些开源的扫描器，还使用了自主开发的扫描器，比如我知道的masscan，据说配合专用的驱动，扫描整个网络用时是远远快于zmap、nmap的。</li>
+</ul>
 
       
     </div>
