@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="zmap namp python," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -91,13 +91,12 @@
 
 
 <meta name="description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
-<meta name="keywords" content="zmap namp python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何构建一个网络空间搜索引擎">
 <meta property="og:url" content="http://yoursite.com/2016/08/15/2016-8-15/index.html">
 <meta property="og:site_name" content="Just For Fun">
 <meta property="og:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
-<meta property="og:updated_time" content="2017-05-25T14:36:34.921Z">
+<meta property="og:updated_time" content="2017-05-25T15:19:44.520Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何构建一个网络空间搜索引擎">
 <meta name="twitter:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
@@ -343,7 +342,19 @@
 <ul>
 <li>调度框架：负责从队列中获取扫描任务分发给扫描节点，然后处理节点完成扫描任务后返回结果。开源的调度框架很多，比如使用Python开发的Celery、RQ、APScheduler等等。</li>
 <li>扫描器：从开源的这些项目中可以看到，它们的扫描器都是使用开源的比如nmap、zmap、bro、pof等，可能商用的网络空间搜索引擎它们不仅仅使用这些开源的扫描器，还使用了自主开发的扫描器，比如我知道的masscan，据说配合专用的驱动，扫描整个网络用时是远远快于zmap、nmap的。</li>
+<li>存储分类：存储使用了MongoDB、Redis等非关系型数据库，对于数据的分类查询，还像大家都使用ElasticSearch简称ES。</li>
+<li>攻击框架：负责漏洞的检测和验证，我觉得网络空间搜索引擎缺少这个攻击框架，那应该是一个残次品。</li>
 </ul>
+<h2 id="初步方案"><a href="#初步方案" class="headerlink" title="初步方案"></a>初步方案</h2><p>根据上面对网络空间搜索引擎整体架构的剖析，要自己实现一个轻量级的网络空间搜索引擎，已经不是那么遥不可及，无非就是编程能力的不同，实现的好坏不同而已。我的原则就是商用产品走它们的阳关大道，我走自己的个性独木桥，just for fun 而已。</p>
+<ul>
+<li>整体工程：整体工程采用Django框架进行开发</li>
+<li>调度框架：采用RQ这个轻量级的任务调度框架</li>
+<li>扫描器：调用nmap，最好提供接口，可以选择使用nmap还是zmap，或者把主动式是pof、bro也给集成进去</li>
+<li>存储：考虑使用Redis，因为最近在研究Redis</li>
+<li>索引查询：使用ElasticSearch，还没用过，以后专门写篇文章介绍一下</li>
+<li>攻击框架：还没想好，后续参照Pocsuite,看看能不能写一个简易的。</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初步方案只是起一个指导方向，具体实现过程中具体调整，但总体架构是不变的。后续会对方案中涉及的技术写相应的文章分析，算作一个知识储备。</p>
 
       
     </div>
@@ -370,12 +381,6 @@
     </div>
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/zmap-namp-python/" rel="tag"># zmap namp python</a>
-          
-        </div>
       
 
       
@@ -514,7 +519,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初步方案"><span class="nav-number">3.</span> <span class="nav-text">初步方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
             
 
           </div>
