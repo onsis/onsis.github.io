@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/08/15/2016-8-15/index.html">
 <meta property="og:site_name" content="Just For Fun">
 <meta property="og:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
-<meta property="og:updated_time" content="2017-05-25T15:24:32.687Z">
+<meta property="og:updated_time" content="2017-05-30T14:21:49.548Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何构建一个网络空间搜索引擎">
 <meta name="twitter:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
@@ -348,9 +348,9 @@
 <h2 id="初步方案"><a href="#初步方案" class="headerlink" title="初步方案"></a>初步方案</h2><p>根据上面对网络空间搜索引擎整体架构的剖析，要自己实现一个轻量级的网络空间搜索引擎，已经不是那么遥不可及，无非就是编程能力的不同，实现的好坏不同而已。我的原则就是商用产品走它们的阳关大道，我走自己的个性独木桥，just for fun 而已。</p>
 <ul>
 <li>整体工程：整体工程采用Django框架进行开发</li>
-<li>调度框架：采用RQ这个轻量级的任务调度框架</li>
+<li>调度框架：采用APScheduler这个轻量级的任务调度框架</li>
 <li>扫描器：调用nmap，最好提供接口，可以选择使用nmap还是zmap，或者把主动式是pof、bro也给集成进去</li>
-<li>存储：考虑使用Redis，因为最近在研究Redis</li>
+<li>存储：考虑使用MongoDB，因为最近在研究MongoDB</li>
 <li>索引查询：使用ElasticSearch，还没用过，以后专门写篇文章介绍一下</li>
 <li>攻击框架：还没想好，后续参照Pocsuite,看看能不能写一个简易的。</li>
 <li>UI呈现：类似zoomeye主页一样，提供攻击地图动态展示。</li>
@@ -392,8 +392,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/06/21/floodlight-03/" rel="next" title="使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境">
-                <i class="fa fa-chevron-left"></i> 使用NetMagic08+floodlight控制器搭建适合实验的小型SDN环境
+              <a href="/2016/07/01/2016-7-1/" rel="next" title="打造一个mini型的SDN控制器">
+                <i class="fa fa-chevron-left"></i> 打造一个mini型的SDN控制器
               </a>
             
           </div>
@@ -472,7 +472,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
