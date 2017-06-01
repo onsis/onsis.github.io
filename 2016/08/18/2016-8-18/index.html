@@ -90,16 +90,19 @@
 
 
 
-<meta name="description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
+<meta name="description" content="引言当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，可以在系统处于低负荷时进行定时启动，比如每天凌晨3点定时启动等等。针对上述这些复杂情况">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何构建一个网络空间搜索引擎">
-<meta property="og:url" content="http://yoursite.com/2016/08/15/2016-8-15/index.html">
+<meta property="og:title" content="Python开源任务调度框架介绍">
+<meta property="og:url" content="http://yoursite.com/2016/08/18/2016-8-18/index.html">
 <meta property="og:site_name" content="Just For Fun">
-<meta property="og:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
-<meta property="og:updated_time" content="2017-05-30T14:21:49.548Z">
+<meta property="og:description" content="引言当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，可以在系统处于低负荷时进行定时启动，比如每天凌晨3点定时启动等等。针对上述这些复杂情况">
+<meta property="og:image" content="https://onsis.github.io/images/celery.png">
+<meta property="og:image" content="https://onsis.github.io/images/RQ.png">
+<meta property="og:updated_time" content="2017-06-01T13:29:12.026Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何构建一个网络空间搜索引擎">
-<meta name="twitter:description" content="引言当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了">
+<meta name="twitter:title" content="Python开源任务调度框架介绍">
+<meta name="twitter:description" content="引言当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，可以在系统处于低负荷时进行定时启动，比如每天凌晨3点定时启动等等。针对上述这些复杂情况">
+<meta name="twitter:image" content="https://onsis.github.io/images/celery.png">
 
 
 
@@ -127,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/08/15/2016-8-15/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/18/2016-8-18/"/>
 
 
 
 
 
-  <title>如何构建一个网络空间搜索引擎 | Just For Fun</title>
+  <title>Python开源任务调度框架介绍 | Just For Fun</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -273,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/15/2016-8-15/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/18/2016-8-18/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="孙小添">
@@ -290,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何构建一个网络空间搜索引擎</h1>
+          <h1 class="post-title" itemprop="name headline">Python开源任务调度框架介绍</h1>
         
 
         <div class="post-meta">
@@ -302,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-15T21:38:04+08:00">
-                2016-08-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T22:24:56+08:00">
+                2016-08-18
               </time>
             
 
@@ -337,25 +340,43 @@
       
 
       
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当初无意中看到知道创宇推出来的网络空间搜索引擎ZoomEye,感觉好炫酷，很好奇它是怎么实现的，所以网上一阵搜索，想弄清楚ZoomEye是怎么实现的，自己也想模仿实现一个，一搜索才知道类似ZoomEye的产品很多，比如最出名的Shodan,以及不包含任何收费项目，全部数据都可以免费下载的Censys,还有开源的ivre，通过查看ivre的源代码，以及网上的一些资料和源码（Scan-T），总结了一个网络空间搜索引擎的大体架构，并为实现自己的个性化网络空间搜索引擎做了一个简单方案。<a id="more"></a></p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>网络空间搜索引擎的整体架构主要分为调度框架、扫描器、存储分类、攻击框架和UI呈现等。</p>
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，可以在系统处于低负荷时进行定时启动，比如每天凌晨3点定时启动等等。针对上述这些复杂情况，就需要一个能够顾全大局的解决方案，还好，已经有强大的开源社区开源了一系列任务调度框架，比如基于Python的Celery、RQ、APScheduler等。</p>
+<h2 id="Celery"><a href="#Celery" class="headerlink" title="Celery"></a>Celery</h2><p>Celery是一个简单、灵活且可靠的，处理大量消息的分布式系统，并且提供维护这样一个系统的必要工具。它支持使用任务队列的方式在分布的机器、进程、线程上执行任务调度。<br>Celery的架构由三部分组成，分别是消息中间件（message broker），任务执行单元（worker）和任务执行结果存储（task result store）。</p>
+<p><img src="https://onsis.github.io/images/celery.png" alt=""></p>
 <ul>
-<li>调度框架：负责从队列中获取扫描任务分发给扫描节点，然后处理节点完成扫描任务后返回结果。开源的调度框架很多，比如使用Python开发的Celery、RQ、APScheduler等等。</li>
-<li>扫描器：从开源的这些项目中可以看到，它们的扫描器都是使用开源的比如nmap、zmap、bro、pof等，可能商用的网络空间搜索引擎它们不仅仅使用这些开源的扫描器，还使用了自主开发的扫描器，比如我知道的masscan，据说配合专用的驱动，扫描整个网络用时是远远快于zmap、nmap的。</li>
-<li>存储分类：存储使用了MongoDB、Redis等非关系型数据库，对于数据的分类查询，好像大家都使用ElasticSearch简称ES。</li>
-<li>攻击框架：负责漏洞的检测和验证，我觉得网络空间搜索引擎缺少这个攻击框架，那应该是一个残次品。</li>
+<li>消息中间件：Celery本身不提供消息服务，但是可以方便的和第三方提供的消息中间件集成，比如，RabbitMQ、Redis、MongoDB、Django ORM、IronMQ等。</li>
+<li>任务执行单元：worker并发的运行在分布式的系统节点中。</li>
+<li><p>任务结果存储：用来存储worker执行的任务结果，支持多种不同的存储方式，比如AMQP、Redis、MongoDB、Django ORM、IronCache等。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>用pip安装</p>
+<p>  $pip install -U Celery</p>
+</li>
 </ul>
-<h2 id="初步方案"><a href="#初步方案" class="headerlink" title="初步方案"></a>初步方案</h2><p>根据上面对网络空间搜索引擎整体架构的剖析，要自己实现一个轻量级的网络空间搜索引擎，已经不是那么遥不可及，无非就是编程能力的不同，实现的好坏不同而已。我的原则就是商用产品走它们的阳关大道，我走自己的个性独木桥，just for fun 而已。</p>
+<p>从源码安装<br>到 <a href="http://pypi.python.org/pypi/celery/" target="_blank" rel="external">http://pypi.python.org/pypi/celery/</a> 下载最新版本的 Celery。</p>
+<pre><code>$ tar xvfz celery-0.0.0.tar.gz
+$ cd celery-0.0.0
+$ python setup.py build
+# python setup.py install
+</code></pre><h2 id="RQ"><a href="#RQ" class="headerlink" title="RQ"></a>RQ</h2><p>Redis Queue（RQ）是一款轻量级的分布式异步任务队列，基于Redis作为broker，将任务存放到redis里面，然后后台执行指定的job。RQ的架构由三部分组成，分别是Job,Queue,Worker。</p>
+<p><img src="https://onsis.github.io/images/RQ.png" alt=""></p>
 <ul>
-<li>整体工程：整体工程采用Django框架进行开发</li>
-<li>调度框架：采用APScheduler这个轻量级的任务调度框架</li>
-<li>扫描器：调用nmap，最好提供接口，可以选择使用nmap还是zmap，或者把主动式是pof、bro也给集成进去</li>
-<li>存储：考虑使用MongoDB，因为最近在研究MongoDB</li>
-<li>索引查询：使用ElasticSearch，还没用过，以后专门写篇文章介绍一下</li>
-<li>攻击框架：还没想好，后续参照Pocsuite,看看能不能写一个简易的。</li>
-<li>UI呈现：类似zoomeye主页一样，提供攻击地图动态展示。</li>
+<li>Job：用来实现具体功能开发定义的函数。</li>
+<li>Queue：调用RQ把Job放入队列Queue中。</li>
+<li><p>Worker：负责从redis里面获取任务并执行，根据具体情况返回函数的结果。</p>
+<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><p>用pip安装</p>
+<p>  pip install rq</p>
+<h2 id="APScheduler"><a href="#APScheduler" class="headerlink" title="APScheduler"></a>APScheduler</h2><p>APScheduler是一个Python定时任务框架，使用起来十分方便。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务、并以daemon方式运行应用.APScheduler由四个基本组件构成。</p>
+</li>
+<li><p>触发器（trigger）：包含调度逻辑，每一个作业有它自己的触发器，用于决定接下来哪一个作业会运行。除了他们自己初始配置意外，触发器完全是无状态的。</p>
+</li>
+<li>作业存储（job store）:存储被调度的作业，默认的作业存储是简单地把作业保存在内存中，其他的作业存储是将作业保存在数据库中。一个作业的数据将在保存在持久化作业存储时被序列化，并在加载时被反序列化。调度器不能分享同一个作业存储。</li>
+<li>执行器（executor）:处理作业的运行，他们通常通过在作业中提交制定的可调用对象到一个线程或者进城池来进行。当作业完成时，执行器将会通知调度器。</li>
+<li><p>调度器（scheduler）:是其他的组成部分。你通常在应用只有一个调度器，应用的开发者通常不会直接处理作业存储、调度器和触发器，相反，调度器提供了处理这些的合适的接口。配置作业存储和执行器可以在调度器中完成，例如添加、修改和移除作业。<br>你需要选择合适的调度器，这取决于你的应用环境和你使用APScheduler的目的。通常最常用的两个：</p>
+<p>  – BlockingScheduler: 当调度器是你应用中唯一要运行的东西时使用。</p>
+<p>  – BackgroundScheduler: 当你不运行任何其他框架时使用，并希望调度器在你应用的后台执行。</p>
+<h2 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h2><p>用pip安装</p>
+<p>  pip install apscheduler</p>
+</li>
 </ul>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初步方案只是起一个指导方向，具体实现过程中具体调整，但总体架构是不变的。后续会对方案中涉及的技术写相应的文章分析，算作一个知识储备。</p>
 
       
     </div>
@@ -392,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/01/2016-7-1/" rel="next" title="打造一个mini型的SDN控制器">
-                <i class="fa fa-chevron-left"></i> 打造一个mini型的SDN控制器
+              <a href="/2016/08/15/2016-8-15/" rel="next" title="如何构建一个网络空间搜索引擎">
+                <i class="fa fa-chevron-left"></i> 如何构建一个网络空间搜索引擎
               </a>
             
           </div>
@@ -402,8 +423,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/18/2016-8-18/" rel="prev" title="Python开源任务调度框架介绍">
-                Python开源任务调度框架介绍 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/21/2016-08-21/" rel="prev" title="Python任务调度模块 – APScheduler">
+                Python任务调度模块 – APScheduler <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -515,7 +536,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">2.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初步方案"><span class="nav-number">3.</span> <span class="nav-text">初步方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Celery"><span class="nav-number">2.</span> <span class="nav-text">Celery</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RQ"><span class="nav-number">3.</span> <span class="nav-text">RQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-1"><span class="nav-number">4.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APScheduler"><span class="nav-number">5.</span> <span class="nav-text">APScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-2"><span class="nav-number">6.</span> <span class="nav-text">安装</span></a></li></ol></div>
             
 
           </div>
