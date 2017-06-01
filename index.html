@@ -449,46 +449,14 @@
 
       
         
-          
-            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，可以在系统处于低负荷时进行定时启动，比如每天凌晨3点定时启动等等。针对上述这些复杂情况，就需要一个能够顾全大局的解决方案，还好，已经有强大的开源社区开源了一系列任务调度框架，比如基于Python的Celery、RQ、APScheduler等。</p>
-<h2 id="Celery"><a href="#Celery" class="headerlink" title="Celery"></a>Celery</h2><p>Celery是一个简单、灵活且可靠的，处理大量消息的分布式系统，并且提供维护这样一个系统的必要工具。它支持使用任务队列的方式在分布的机器、进程、线程上执行任务调度。<br>Celery的架构由三部分组成，分别是消息中间件（message broker），任务执行单元（worker）和任务执行结果存储（task result store）。</p>
-<p><img src="https://onsis.github.io/images/celery.png" alt=""></p>
-<ul>
-<li>消息中间件：Celery本身不提供消息服务，但是可以方便的和第三方提供的消息中间件集成，比如，RabbitMQ、Redis、MongoDB、Django ORM、IronMQ等。</li>
-<li>任务执行单元：worker并发的运行在分布式的系统节点中。</li>
-<li><p>任务结果存储：用来存储worker执行的任务结果，支持多种不同的存储方式，比如AMQP、Redis、MongoDB、Django ORM、IronCache等。</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>用pip安装</p>
-<p>  $pip install -U Celery</p>
-</li>
-</ul>
-<p>从源码安装<br>到 <a href="http://pypi.python.org/pypi/celery/" target="_blank" rel="external">http://pypi.python.org/pypi/celery/</a> 下载最新版本的 Celery。</p>
-<pre><code>$ tar xvfz celery-0.0.0.tar.gz
-$ cd celery-0.0.0
-$ python setup.py build
-# python setup.py install
-</code></pre><h2 id="RQ"><a href="#RQ" class="headerlink" title="RQ"></a>RQ</h2><p>Redis Queue（RQ）是一款轻量级的分布式异步任务队列，基于Redis作为broker，将任务存放到redis里面，然后后台执行指定的job。RQ的架构由三部分组成，分别是Job,Queue,Worker。</p>
-<p><img src="https://onsis.github.io/images/RQ.png" alt=""></p>
-<ul>
-<li>Job：用来实现具体功能开发定义的函数。</li>
-<li>Queue：调用RQ把Job放入队列Queue中。</li>
-<li><p>Worker：负责从redis里面获取任务并执行，根据具体情况返回函数的结果。</p>
-<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><p>用pip安装</p>
-<p>  pip install rq</p>
-<h2 id="APScheduler"><a href="#APScheduler" class="headerlink" title="APScheduler"></a>APScheduler</h2><p>APScheduler是一个Python定时任务框架，使用起来十分方便。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务、并以daemon方式运行应用.APScheduler由四个基本组件构成。</p>
-</li>
-<li><p>触发器（trigger）：包含调度逻辑，每一个作业有它自己的触发器，用于决定接下来哪一个作业会运行。除了他们自己初始配置意外，触发器完全是无状态的。</p>
-</li>
-<li>作业存储（job store）:存储被调度的作业，默认的作业存储是简单地把作业保存在内存中，其他的作业存储是将作业保存在数据库中。一个作业的数据将在保存在持久化作业存储时被序列化，并在加载时被反序列化。调度器不能分享同一个作业存储。</li>
-<li>执行器（executor）:处理作业的运行，他们通常通过在作业中提交制定的可调用对象到一个线程或者进城池来进行。当作业完成时，执行器将会通知调度器。</li>
-<li><p>调度器（scheduler）:是其他的组成部分。你通常在应用只有一个调度器，应用的开发者通常不会直接处理作业存储、调度器和触发器，相反，调度器提供了处理这些的合适的接口。配置作业存储和执行器可以在调度器中完成，例如添加、修改和移除作业。<br>你需要选择合适的调度器，这取决于你的应用环境和你使用APScheduler的目的。通常最常用的两个：</p>
-<p>  – BlockingScheduler: 当调度器是你应用中唯一要运行的东西时使用。</p>
-<p>  – BackgroundScheduler: 当你不运行任何其他框架时使用，并希望调度器在你应用的后台执行。</p>
-<h2 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h2><p>用pip安装</p>
-<p>  pip install apscheduler</p>
-</li>
-</ul>
-
-          
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>当开发者希望以指定的间隔时间执行各类操作，并完成一些无需用户输入的任务，或者是一些“防止用户长时间等待”的需求时，比如搜索这样的例子，当用户输入关键字点击搜索的时候，到浏览器返回结果这个时间的长短直接影响了用户体验，另外当多个用户同时提交不同的搜索任务的时候，如何来调度这些任务，加上一些不是要求实时性的任务，
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/08/18/2016-8-18/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
